@@ -11,8 +11,8 @@ client_secret = "bog5VuUDnc"
 query = urllib.parse.quote(input("검색할 단어: "))
 idx = 0
 display = 1
-start = 1
-end = 200
+start = dl1
+end = 30
 sort = "sim"
 
 book_df = pd.DataFrame(
@@ -21,10 +21,10 @@ book_df = pd.DataFrame(
         "link",
         "image",
         "author",
-        "price",
-        "discount",
+        # "price",
+        # "discount",
         "publisher",
-        "isbn",
+        # "isbn",
         "description",
         "pubdate",
     )
@@ -61,10 +61,10 @@ for start_index in range(start, end, display):
             link = items[item_index]["link"]
             image = items[item_index]["image"]
             author = items[item_index]["author"]
-            price = items[item_index]["price"]
-            discount = items[item_index]["discount"]
+            # price = items[item_index]["price"]
+            # discount = items[item_index]["discount"]
             publisher = items[item_index]["publisher"]
-            isbn = items[item_index]["isbn"]
+            # isbn = items[item_index]["isbn"]
             description = re.sub(remove_tag, "", items[item_index]["description"])
             pubdate = items[item_index]["pubdate"]
 
@@ -73,10 +73,10 @@ for start_index in range(start, end, display):
                 link,
                 image,
                 author,
-                price,
-                discount,
+                # price,
+                # discount,
                 publisher,
-                isbn,
+                # isbn,
                 description,
                 pubdate,
             ]
@@ -86,4 +86,5 @@ for start_index in range(start, end, display):
         print("Error Code:" + rescode)
 
 book_df.to_json("일반소설.json", force_ascii=False)
+# book_df.to_csv("일반소설_image_link.csv", encoding="utf-8")
 book_df
