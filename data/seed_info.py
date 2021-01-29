@@ -192,7 +192,7 @@ profile_images = [
     "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
 ]
 
-publisher_summary = [
+publisher_reviews = [
     """
     『바람과 함께 사라지다』만큼 미국인들, 세계인들, 그리고 한국인들에게 사랑받아 온 이야기가 있을까요? 그런 소설이나 그런 영화는 몇 있을지 몰라도, 둘 다는 있을 수 없지요. 『바람과 함께 사라지다』는 주인공 스칼렛의 뛰어남을 그대로 갖추었습니다. 스칼렛처럼 반짝반짝 빛나고, 거침이 없고, 삶에 대한 열정으로 가득하죠. 그리고 무엇보다, 사건들을 ‘직선적이며 단순하게’ 바라보는 태도가 스칼렛 오하라와 꼭 닮았습니다.
 
@@ -823,16 +823,29 @@ LESSON 06최고의 매매 타이밍 잡기
 ]
 
 book_images = [
-    "https://bookthumb-phinf.pstatic.net/cover/176/900/17690014.jpg?type=m1&udate=20201222",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
+    "https://bookthumb-phinf.pstatic.net/cover/176/900/17690014.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/178/091/17809117.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/178/091/17809118.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/178/091/17809119.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/178/091/17809129.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/178/091/17809139.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/164/054/16405427.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/164/054/16405428.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/164/054/16405429.jpg",
+    "https://bookthumb-phinf.pstatic.net/cover/164/054/16405432.jpg",
+]
+
+purchase_url = [
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=17848733",
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=11822433",
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=14007772",
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=14524825",
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=17854286",
+    "https://book.naver.com/bookdb/book_detail.nhn?bid=15516420",
+    "https://series.naver.com/ebook/detail.nhn?productNo=4740881",
+    "https://series.naver.com/ebook/detail.nhn?productNo=2617942",
+    "https://series.naver.com/ebook/detail.nhn?productNo=363416",
+    "https://series.naver.com/ebook/detail.nhn?productNo=2196575",
 ]
 
 library_images = [

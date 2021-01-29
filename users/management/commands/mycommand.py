@@ -32,30 +32,30 @@ class Command(BaseCommand):
         random_number_of_days = random.randrange(days_between_dates)
         random_date = start_date + datetime.timedelta(days=random_number_of_days)
 
-        # seeder.add_entity(
-        #     Book,
-        #     number,
-        #     {
-        #         "title": lambda x: random.choice(seed_info.book_title),
-        #         "summary": lambda x: random.choice(seed_info.book_summary),
-        #         "translator": lambda x: fake.name(),
-        #         "sub_title": lambda x: random.choice(seed_info.book_sub_title),
-        #         "description": lambda x: random.choice(seed_info.book_summary),
-        #         "page": lambda x: random.randint(300, 1000),
-        #         "capacity": lambda x: random.randint(25, 1000),
-        #         "pub_date": lambda x: fake.date(),
-        #         "launched_date": lambda x: fake.date(),
-        #         "contents": lambda x: random.choice(seed_info.book_contents),
-        #         "publisher_review": lambda x: fake.text(seed_info.publisher_summary),
-        #         "image_url": lambda x: random.choice(seed_info.book_image),
-        #         "purchase_url": lambda x: fake.,
-        #         "author": lambda x: random.choice(seed_info.book_sub_title),
-        #         "sub_category": lambda x: Subcategory.objects.all(),
-        #         "publisher": lambda x: random.choice(seed_info.book_sub_title),
-        #         "series": lambda x: random.choice(Series.objects.all()),
-        #         #  'shelf'            : lambda x: fake.name(),
-        #     },
-        # )
+        seeder.add_entity(
+            Book,
+            number,
+            {
+                "title": lambda x: random.choice(seed_info.book_title),
+                "summary": lambda x: random.choice(seed_info.book_summary),
+                "translator": lambda x: fake.name(),
+                "sub_title": lambda x: random.choice(seed_info.book_sub_title),
+                "description": lambda x: random.choice(seed_info.book_summary),
+                "page": lambda x: random.randint(300, 1000),
+                "capacity": lambda x: random.randint(25, 1000),
+                "pub_date": lambda x: fake.date(),
+                "launched_date": lambda x: fake.date(),
+                "contents": lambda x: random.choice(seed_info.book_contents),
+                "publisher_review": lambda x: fake.text(seed_info.publisher_summary),
+                "image_url": lambda x: random.choice(seed_info.book_images),
+                "purchase_url": lambda x: random.choice(seed_info.purchase_url),
+                "author": lambda x: random.choice(seed_info.book_sub_title),
+                "sub_category": lambda x: Subcategory.objects.all(),
+                "publisher": lambda x: random.choice(seed_info.book_sub_title),
+                "series": lambda x: random.choice(Series.objects.all()),
+                #  'shelf'            : lambda x: fake.name(),
+            },
+        )
         # Author
         # seeder.add_entity(
         #     Author,
@@ -136,11 +136,11 @@ class Command(BaseCommand):
         # )
 
         # Library 완료!
-        seeder.add_entity(
-            Library,
-            number,
-            {"name": lambda x: fake.word()},
-        )
+        # seeder.add_entity(
+        #     Library,
+        #     number,
+        #     {"name": lambda x: fake.word()},
+        # )
 
         # User
 

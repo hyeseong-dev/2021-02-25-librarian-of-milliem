@@ -16,7 +16,7 @@ class Book(models.Model):
     image_url = models.URLField(max_length=2045, null=True)
     purchase_url = models.URLField(max_length=2045, null=True)
     author = models.ForeignKey("Author", on_delete=models.CASCADE, related_name="books")
-    sub_category = models.ForeignKey(
+    subcategory = models.ForeignKey(
         "Subcategory", on_delete=models.CASCADE, related_name="books"
     )
     publisher = models.ForeignKey(
