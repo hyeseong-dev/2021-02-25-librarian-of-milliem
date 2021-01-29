@@ -5,6 +5,7 @@ for i in Book.objects.all():
     i.publisher_review = random.choice(seed_info.publisher_reviews)
     i.save()
 
+<<<<<<< HEAD
 
 for i in Book.objects.all():
     # i.title =random.choice(seed_info.book_title)
@@ -108,3 +109,9 @@ for i in Review.objects.prefetch_related("subcategory", "publisher", "series").f
         'author_name':
     }
 }
+=======
+print(seed_info.book_title)hello world
+1차 커밋
+2차 커밋
+16:40 commit
+>>>>>>> b7a113262ca6f1cef05d86b14f10c7e329458a9d
