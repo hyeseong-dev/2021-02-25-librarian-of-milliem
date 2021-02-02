@@ -13,7 +13,6 @@ class BookListView(View):
     def get(self, request,category_id):
         try:
 
-
             OFFSET = 0 
             LIMIT  = 10
 
