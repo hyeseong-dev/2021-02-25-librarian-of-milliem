@@ -9,11 +9,10 @@ from book.utils         import validate_value, query_debugger
 from book.models        import Book, Author, Publisher, Category, Review, ReviewLike
 
 
-class CategoryListView(View):
+class BookListView(View):
     def get(self, request,category_id):
         try:
-            # 메인 페이지, 섹션별 아이템 10개 뿌리기
-            # category_id = int(request.GET.get(category_id,1))
+
 
             OFFSET = 0 
             LIMIT  = 10
@@ -22,8 +21,6 @@ class CategoryListView(View):
                                 .filter(category__id=category_id)\
                                 .order_by('?')[OFFSET:LIMIT]
 
-
-            # 슬라이더 부분
             slider = []
             for idx,book in enumerate(books,1):
                     
@@ -54,9 +51,7 @@ class CategoryListView(View):
                     )
                 
 
-            # 가장 좋아하는 책(== 리뷰가 가장 많이 달린 책)
             favorite_books = []
-             
             books = Book.objects.annotate(num_reviews=Count('reviews')).order_by('-num_reviews')
             
             for idx,book in enumerate(books,1):
@@ -69,8 +64,6 @@ class CategoryListView(View):
                         }
                     )
                     
-
-            # 특정한 카테고리에서 랜덤하게 서브카테고리를 정하고 10개 책을 가져옴 - sub_cate1
             sub1 = Book.objects.prefetch_related("author", "publisher", )\
                                 .filter(category__id=category_id).order_by('?')[OFFSET:LIMIT]
             sub_list_1 = []
@@ -103,8 +96,8 @@ class CategoryListView(View):
                                             {"slider"                       : slider},
                                             {"recent_books"                 : recent_book_list},
                                             {"favorite_books"               : favorite_books},
-                                            {"sub_category_name1" : sub_list_1},
-                                            {"sub_category_name2" : sub_list_2}
+                                            {"sub_category_name1"           : sub_list_1},
+                                            {"sub_category_name2"           : sub_list_2}
                                             ]
                                 
                                 },
