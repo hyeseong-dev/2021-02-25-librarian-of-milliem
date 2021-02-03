@@ -19,21 +19,16 @@ class Book(models.Model):
     category         = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="books")
     publisher        = models.ForeignKey("Publisher", on_delete=models.CASCADE, related_name="books")
     shelf            = models.ManyToManyField("library.Shelf", related_name="books")
-    
     class Meta:
         db_table = "books"
 
 class Review(models.Model):
-    user        = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, related_name="reviews"
-    )
+    user        = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="reviews")
     book        = models.ForeignKey("Book", on_delete=models.CASCADE, related_name="reviews")
     pub_date    = models.DateField()
     body_text   = models.TextField()
-    
     class Meta:
         db_table = "reviews"
-
 
 class ReviewLike(models.Model):
     user    = models.ForeignKey("users.User", on_delete=models.CASCADE)
@@ -45,31 +40,24 @@ class Author(models.Model):
     name              = models.CharField(max_length=20)
     description       = models.TextField()
     profile_image_url = models.URLField(max_length=2000, null=True)
-
     class Meta:
         db_table = "authors"
-
 
 class Publisher(models.Model):
     name        = models.CharField(max_length=20)
     description = models.TextField()
-
     class Meta:
         db_table = "publishers"
 
 class Subcategory(models.Model):
     name     = models.CharField(max_length=45)
     category = models.ForeignKey(
-        "Category", on_delete=models.CASCADE, related_name="subcategories"
-    )
-
+        "Category", on_delete=models.CASCADE, related_name="subcategories")
     class Meta:
         db_table = "subcategories"
 
-
 class Category(models.Model):
     name = models.CharField(max_length=45)
-
     class Meta:
         db_table = "categories"
 

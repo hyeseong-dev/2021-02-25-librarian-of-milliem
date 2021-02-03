@@ -9,9 +9,10 @@ from book.utils         import validate_value, query_debugger
 from book.models        import Book, Review, ReviewLike
 
 class BookListView(View):
-    def get(self, request,category_id):
+    def get(self, request):
         try:
-            category_id = 1 if not 1<=category_id<=4 else category_id
+            category_id = int(request.GET.get('category_id',1))
+            # category_id = 1 if not 1<=category_id<=4 else category_id
             OFFSET = 0 
             LIMIT  = 10
 
@@ -154,7 +155,6 @@ class ReviewLikeView(View):
             return JsonResponse({'message':'SUCCESS'}, status=200)
 
 class SearchView(View) :
-
     def get(self, request, keyword) :
         type   = request.GET.get('type','all')
         sort   = request.GET.get('sort','keyword')
@@ -167,14 +167,24 @@ class SearchView(View) :
             'title'     : Q(title__icontains = keyword) ,
             'publisher' : Q(publisher__name__icontains= keyword)
         }
-
-        books = Book.objects.prefetch_related('author').filter(type_filter[type]).order_by(sort_dic[sort]).distinct()[offset:offset+limit]
+        sort_dic = {
+            'keyword'   : 'id',
+            'page'      : '-pages',
+            'published' : 'publication_date'
+        }
+        books = Book.objects.prefetch_related('author','category').filter(type_filter[type]).order_by(sort_dic[sort])[offset:offset+limit]
+        print(books.count(),'몇개인가요?')
+        book1 = Book.objects.filter(category=1)
+        print(book1.count(), '이건 몇개인데?')
         if books :
             booklist = [ {
-                "book_id"    : book.id,
-                "book_title" : book.title,
-                "book_image" : book.small_image_url,
-                "author"     : [authors.name for authors in book.author.all()]                
+                "category_id"   : book.category.id,
+                "category_name" : book.category.name,
+                "book_id"       : book.id,
+                "book_title"    : book.title,
+                "book_image"    : book.image_url,
+                "author"        : book.author.name                 
             } for book in books ]
             return JsonResponse({'MESSAGE': booklist }, status=200)
         return JsonResponse({'MESSAGE': 'NO_RESULT'}, status=401)
+    
