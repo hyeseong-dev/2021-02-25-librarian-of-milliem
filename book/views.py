@@ -18,38 +18,53 @@ class BookListView(View):
 
             slider = [ {
                             'id'           :idx,
+                            'category.id'  :book.category.id,
+                            'category.name':book.category.name,
                             'book_id'      :book.id,
                             'bookTitle'    :book.title,
                             'bookCoverImg' :book.image_url,
                             'bookAuthor'   :book.author.name,
-                        } for idx,book in enumerate(Book.objects.prefetch_related("author", "publisher", )\
+                        } for idx,book in enumerate(Book.objects.prefetch_related("author", "publisher")\
                         .filter(category__id=category_id).order_by('?')[OFFSET:LIMIT],1) ]
+            print('여기')
             recent_book_list = [ {
                             'id'           :idx,
+                            'category.id'  :book.category.id,
+                            'category.name':book.category.name,
                             'book_id'      :book.id,
                             'bookTitle'    :book.title,
                             'bookCoverImg' :book.image_url,
                             'bookAuthor'   :book.author.name,
                         } for idx,book in enumerate(Book.objects.prefetch_related('author','publisher')\
                         .filter(category__id=category_id).order_by('-pub_date')[OFFSET:LIMIT],1) ]
+            print('거기')
+
             favorite_books = [ {
                             'id'           :idx,
+                            'category.id'  :book.category.id,
+                            'category.name':book.category.name,
                             'book_id'      :book.id,
                             'bookTitle'    :book.title,
                             'bookCoverImg' :book.image_url,
                             'bookAuthor'   :book.author.name,
                         } for idx, book in enumerate(Book.objects.annotate(num_reviews=Count('reviews'))\
-                        .order_by('-num_reviews')[OFFSET:LIMIT],1) ]
+                        .filter(category__id=category_id).order_by('-num_reviews')[OFFSET:LIMIT],1) ]
+
             subcategory_list1 = [{
                             'id'           :idx,
+                            'category.id'  :book.category.id,
+                            'category.name':book.category.name,
                             'book_id'      :book.id,
                             'bookTitle'    :book.title,
                             'bookCoverImg' :book.image_url,
                             'bookAuthor'   :book.author.name,
                         } for idx, book in enumerate(Book.objects.prefetch_related("author", "publisher", )\
                         .filter(category__id=category_id).order_by('?')[OFFSET:LIMIT],1) ]
+
             subcategory_list2 = [{
                             'id'           :idx,
+                            'category.id'  :book.category.id,
+                            'category.name':book.category.name,
                             'book_id'      :book.id,
                             'bookTitle'    :book.title,
                             'bookCoverImg' :book.image_url,
@@ -173,9 +188,6 @@ class SearchView(View) :
             'published' : 'publication_date'
         }
         books = Book.objects.prefetch_related('author','category').filter(type_filter[type]).order_by(sort_dic[sort])[offset:offset+limit]
-        print(books.count(),'몇개인가요?')
-        book1 = Book.objects.filter(category=1)
-        print(book1.count(), '이건 몇개인데?')
         if books :
             booklist = [ {
                 "category_id"   : book.category.id,

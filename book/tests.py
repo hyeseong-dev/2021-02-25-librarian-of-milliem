@@ -1,12 +1,13 @@
 import json
 
-from django.test import TestCase, Client
+from django.test  import TestCase, Client
 
 
-from my_settings import SECRET_KEY
+from my_settings    import SECRET_KEY
 
-from user.models import User, UserType,Subscribe
-from book.models import (
+from library.models import Library, Shelf
+from users.models   import User, UserType,Subscribe
+from book.models    import (
     Book, 
     Review, 
     ReviewLike, 
@@ -14,11 +15,12 @@ from book.models import (
     Publisher,
     Category)
 
-class BookDetailTest(TestCase):
-    def setUpTestData(self):
+class BookListTest(TestCase):
+    def setUp(self):
         client = Client()
         Category.objects.create(id=1, name='일반소설')
-        UserType.objects.create(id=1, name='모바일')
+        usertype = UserType.objects.create(id=1, name='모바일')
+        Subscribe.objects.create(id=1, price=1)
         User.objects.create(
             id                = 1, 
             social_id         = "01058974859",
@@ -30,10 +32,7 @@ class BookDetailTest(TestCase):
             email             = "hyeseong43@gmail.com",
             profile_image_url = "profile_image_url",
             library_image_url = "library_image_url",
-            usertype          = 1,
-            subscribe         = "",
-            category          = "1",
-            review            = "",
+            usertype          = usertype,
              )
         Author.objects.create(id=1, name='name', description='description', profile_image_url='profile_image_url')
         Publisher.objects.create(id=1, name='name', description='description')
@@ -45,19 +44,80 @@ class BookDetailTest(TestCase):
             summary          = 'summary',
             translator       = 'translator',
             sub_title        = 'sub_title',
-            description      = 'description     ',
-            page             = 400,
-            capacity         = 300,
-            pub_date         = 210101,
-            launched_date    = 210110,
-            contents         = 'contents        ',
+            description      = 'description',
+            page             = 1,
+            capacity         = 1,
+            pub_date         = 900922,
+            launched_date    = 900922,
+            contents         = 'contents',
             publisher_review = 'publisher_review',
-            image_url        = 'image_url       ',
-            purchase_url     = 'purchase_url    ',
+            image_url        = 'image_url',
+            purchase_url     = 'purchase_url',
             author           = 1,
             category         = 1,
             publisher        = 1,
             shelf            = 1
         )
+    
     def tearDown(self):
-        
+        User.objects.all().delete()
+        Usertype.objects.all().delete()
+        Book.objects.all().delete()
+        Publisher.objects.all().delete()
+        Subcategory.objects.all().delete()
+        Category.objects.all().delete()
+        Author.objects.all().delete()
+        Library.objects.all().delete()
+        Review.objects.all().delete()
+        ReviewLike.objects.all().delete()
+        Author.objects.all().delete()
+
+    def test_booklist_get_success(self):
+        client = Client()
+        response = client.get('/book?category_id=1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'bookData': {
+                                              "slider"            : 
+                                                                    [{
+                                                                    'id'           :idx,
+                                                                    'book_id'      :book.id,
+                                                                    'bookTitle'    :book.title,
+                                                                    'bookCoverImg' :book.image_url,
+                                                                    'bookAuthor'   :book.author.name,
+                                                                }],
+                                              "recent_books"      : 
+                                                                    [{
+                                                                    'id'           :idx,
+                                                                    'book_id'      :book.id,
+                                                                    'bookTitle'    :book.title,
+                                                                    'bookCoverImg' :book.image_url,
+                                                                    'bookAuthor'   :book.author.name,
+                                                                }],
+                                              "favorite_books"    : 
+                                                                    [ {
+                                                                    'id'           :idx,
+                                                                    'book_id'      :book.id,
+                                                                    'bookTitle'    :book.title,
+                                                                    'bookCoverImg' :book.image_url,
+                                                                    'bookAuthor'   :book.author.name,
+                                                                }],
+                                              "subcategory_list1" : 
+                                                                    [{
+                                                                    'id'           :idx,
+                                                                    'book_id'      :book.id,
+                                                                    'bookTitle'    :book.title,
+                                                                    'bookCoverImg' :book.image_url,
+                                                                    'bookAuthor'   :book.author.name,
+                                                                }],
+                                              "subcategory_list2" : 
+                                                                    [{
+                                                                    'id'           :idx,
+                                                                    'book_id'      :book.id,
+                                                                    'bookTitle'    :book.title,
+                                                                    'bookCoverImg' :book.image_url,
+                                                                    'bookAuthor'   :book.author.name,
+                                                                }] }})
+    def test_booklist_get_fail(self):
+        client = Client()
+        response = client.get('/book/cateogory_id')
+        self.assertEqual(response.status_code, 404)
