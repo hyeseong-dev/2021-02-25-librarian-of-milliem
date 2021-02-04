@@ -30,7 +30,7 @@ WRITTEN BY HyeSeong LEE
 
 ## TRELLO
 
-<img src="https://images.velog.io/images/hyeseong-dev/post/a4e4862a-0998-4ea5-a55b-ac3a31a84e8c/image.png" height="100%"/>
+<img src="https://images.velog.io/images/hyeseong-dev/post/a4e4862a-0998-4ea5-a55b-ac3a31a84e8c/image.png" width="100%"/>
 
 ## CONTENTS
 
