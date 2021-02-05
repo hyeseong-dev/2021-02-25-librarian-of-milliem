@@ -10,32 +10,32 @@ from django.http    import JsonResponse
 from random         import randint
 from users.models   import User, PhoneCheck, UserType
 from library.models import Library
-from my_settings    import ACCOUNT_SID, AUTH_TOKEN, algorithm, SECRET_KEY
+from my_settings    import algorithm, SECRET_KEY 
 
-class SendSmSView(View):
-    def post(self, request):
-        try:
-            data         = json.loads(request.body)
-            input_mobile = data['mobile']
-
-            if not re.match(r"(010)\d{4}\d{4}",input_mobile):
-                return JsonResponse({'message':'INVALID_PHONE_NUMBER'}, status=401)
-            to_mobile = '+82'+ input_mobile[1:]
-            check_number = randint(1000,9999)
-
-            if not PhoneCheck.objects.filter(check_id=input_mobile).exists():
-                PhoneCheck.objects.create(check_id=input_mobile, check_number=check_number)
-            PhoneCheck.objects.filter(check_id=input_mobile).update(check_number=check_number)
-        
-            client = Client(ACCOUNT_SID, AUTH_TOKEN)
-            client.messages.create(
-                body  =f'milliem의사서 인증을 위해 [{check_number}]을 입력해주세요.' ,
-                from_ ='+14078716367',
-                to    = to_mobile
-            )
-            return JsonResponse({'message': 'SUCCESS'}, status=200)
-        except KeyError:
-            return JsonResponse({'message':'KEY_ERROR'}, status=401)
+#class SendSmSView(View):
+#    def post(self, request):
+#        try:
+#            data         = json.loads(request.body)
+#            input_mobile = data['mobile']
+#
+#            if not re.match(r"(010)\d{4}\d{4}",input_mobile):
+#                return JsonResponse({'message':'INVALID_PHONE_NUMBER'}, status=401)
+#            to_mobile = '+82'+ input_mobile[1:]
+#            check_number = randint(1000,9999)
+#
+#            if not PhoneCheck.objects.filter(check_id=input_mobile).exists():
+#                PhoneCheck.objects.create(check_id=input_mobile, check_number=check_number)
+#            PhoneCheck.objects.filter(check_id=input_mobile).update(check_number=check_number)
+#        
+#            client = Client(ACCOUNT_SID, AUTH_TOKEN)
+#            client.messages.create(
+#                body  =f'milliem의사서 인증을 위해 [{check_number}]을 입력해주세요.' ,
+#                from_ ='+14078716367',
+#                to    = to_mobile
+#            )
+#            return JsonResponse({'message': 'SUCCESS'}, status=200)
+#        except KeyError:
+#            return JsonResponse({'message':'KEY_ERROR'}, status=401)
 
 class VerificationView(View):
     def post(self,request):
@@ -106,3 +106,28 @@ class MobileSignIn(View):
             return JsonResponse({'message':'WRONG_PASSWORD'}, status=401)
         except KeyError:
             return JsonResponse({'message': 'KEY_ERROR'}, status=401)
+
+class KakaoView(View):
+    def post(self, request): 
+        try:
+            access_token = request.headers['Authorization']
+            headers      = ({'Authorization' : f'Bearer {access_token}'})
+            url          = 'https://kapi.kakao.com/v2/user/me'
+            data         = requests.get(url, headers=headers).json()
+
+            if not User.objects.filter(social_id = data['id']).exists():
+                new_library = Library.objects.create(name=f'{data["properties"]["nickname"]}의 서재')
+                usertype    = UserType.objects.get(name='kakao')
+                new_user    = User.objects.create(
+                    social_id   = data['id'],
+                    nickname    = data['properties']['nickname'],
+                    library     = new_library,
+                    usertype    = usertype
+                    )
+                token = jwt.encode({'id': new_user.id}, SECRET_KEY, algorithm)
+                return JsonResponse({'message':'KAKAO_SIGNUP_SUCCESS', 'TOKEN':token.decode()}, status=200)
+            exist_user = User.objects.get(social_id=data['id'])
+            token      = jwt.encode({'id': exist_user.id}, SECRET_KEY, algorithm)
+            return JsonResponse({'message':'KAKAO_SIGNIN_SUCCESS', 'TOKEN':token.decode()}, status=200)
+        except KeyError:
+            return JsonResponse({'message':'KEY_ERROR'}, status=401)
